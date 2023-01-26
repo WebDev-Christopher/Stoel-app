@@ -44,13 +44,14 @@ class UserController extends Controller
         $user = User::where('username', $user_data['username'])->first();
         
         if ($user) {
+            $user_data["email_to"] = $user->email;
             if(password_verify($user_data["password"], $user->password)) {
+                
+                Mail::to($user["email"])->queue(new LoginUser($user_data));
+                
                 if(auth()->login($user)) {
                     $request->session()->regenerate();
-
-                    Mail::to($user["email"])->queue(new LoginUser($user_data));
-
-                    return redirect()->back()->with('message', 'You are now logged in');
+                    return redirect("/")->with('message', 'You are now logged in');
                 }
                 else {
                     return redirect()->back()->with('message', 'Email or password incorrect');
@@ -83,15 +84,18 @@ class UserController extends Controller
      */    
     public function createUser(UserCreateRequest $request) {
         $user_data = $request->validated();
-
         $user_data["password"] = password_hash($user_data["password"], PASSWORD_DEFAULT);
 
-        if(auth()->login(User::create($user_data))) {
-            $request->session()->regenerate();
-
+        if($user_data){
             Mail::to($user_data["email"])->queue(new CreateUser($user_data));
 
-            return redirect('/')->with('message', 'You are now logged in');
+            if(auth()->login(User::create($user_data))) {
+                $request->session()->regenerate();
+                return redirect('/')->with('message', 'You are now logged in');
+            }
+            else {
+                return redirect()->back()->with('message', "User couldn't be created");
+            }
         }
         else {
             return redirect()->back()->with('message', "User couldn't be created");

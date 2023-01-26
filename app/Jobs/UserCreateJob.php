@@ -38,6 +38,6 @@ class UserCreateJob implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->details['email_to'])->send(new CreateUser($this->details));
+        Mail::to($this->details['email'])->send(new CreateUser($this->details));
     }
 }
