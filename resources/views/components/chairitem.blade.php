@@ -1,5 +1,5 @@
 <div class="chairitem card col-12 col-sm-6 col-md-4 col-lg-3 m-2 p-2">
-    <img src="{{asset('/storage/chairImages/'.$item->image.'')}}" class="card-img-top" alt="{{$item->id}}-{{$item->name}}">
+    <img src="{{asset('/storage/chairImages/'.$item->image.'')}}" class="chair-image card-img-top img-thumbnail" alt="{{$item->id}}-{{$item->name}}" style="height: 255px;">
     <div class="card-body">
         <h1 class="text-truncate"><a href="/chair/{{$item->id}}">{{$item->name}}</a></h1>
         <p class="card-text">{{$item->body}}</p>

@@ -23,6 +23,8 @@
 </head>
 <body>
     @include('components.navbar')
-    @yield('main')
+    <div class="pb-5">
+        @yield('main')
+    </div>
 </body>
 </html>

@@ -57,7 +57,7 @@
         }
 
         .card {
-            width: 200px;
+            width: 34%;
             margin: auto;
             margin-top: 30px;
             border: 1px solid rgba(0, 0, 0, 0.425);
@@ -67,29 +67,31 @@
         }
 
         .card .chair-image {
-            width: 200px;
+            width: 100%;
         }
     </style>
 </head>
 <body>
     <div id="page-title">
         <h1>Check out our new chairs</h1>
-        <button>Look at a chair</button>
+        <a href="http://stoel-app.test"><button>Look at a chair</button></a>
     </div>
     <header id="header">
-        <img src="{{asset('/storage/mailImages//mail/email-header-newchair.webp')}}" alt="">
+        <img src="{{asset('/storage/mailImages/email-header-newchair.webp')}}" alt="">
     </header>
 
     <h2 id="page-message">We got a new chair</h2>
 
     <div id="card-container">
         <div class="card">
-            <img src="{{asset('/storage/chairImages/'.$chair->image.'')}}" class="chair-image" alt="{{$chair->name}}">
-            <div class="card-body">
-                <h3>{{$chair->name}}</h3>
-                <br>
-                <h4>&euro; {{$chair->amount}}</h4>
-            </div>
+            <a href="http://stoel-app.test/chair/{{$chair->id}}">
+                <img src="{{asset('/storage/chairImages/'.$chair->image.'')}}" class="chair-image" alt="{{$chair->name}}">
+                <div class="card-body">
+                    <h3>{{$chair->name}}</h3>
+                    <br>
+                    <h4>&euro; {{$chair->amount}}</h4>
+                </div>
+            </a>
         </div>
     </div>
 </body>
