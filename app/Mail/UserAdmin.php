@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Chair;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
@@ -11,25 +11,25 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class AddedChair extends Mailable
+class UserAdmin extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
-     * The model
+     * The order instance.
      *
-     * @var \App\Models\Chair
+     * @var \App\Models\User
      */
-    public $chair;
+    public $user;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($chair)
+    public function __construct($user)
     {
-        $this->chair = $chair;
+        $this->user = $user;
     }
 
     /**
@@ -44,7 +44,7 @@ class AddedChair extends Mailable
             replyTo: [
                 new Address('info@example.com', 'Christopher Garcia'),
             ],
-            subject: 'Our brand new Chair',
+            subject: 'You have been turned into an admin',
         );
     }
 
@@ -56,7 +56,7 @@ class AddedChair extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.chairs.create',
+            view: 'emails.users.admin',
         );
     }
 

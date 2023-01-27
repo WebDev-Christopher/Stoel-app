@@ -56,7 +56,7 @@ class LoginUser extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.users.loginuser',
+            view: 'emails.users.login',
         );
     }
 

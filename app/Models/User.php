@@ -52,6 +52,22 @@ class User extends Authenticatable
 
     public function getAllUsers()
     {
-        return Auth::user();
+        return $this::all();
+    }
+
+    public function updateUser($id, $username, $email) {
+        return $this::where('id', $id)->update(['username'=> $username, 'email'=> $email]);
+    }
+
+    public function updateUserPassword($id, $password) {
+        return $this::where('id', $id)->update(['password'=> $password]);
+    }
+
+    public function updateUserAdmin($id, $admin) {
+        return $this::where('id', $id)->update(['admin'=> $admin]);
+    }
+
+    public function updateUserVerification($id, $verify) {
+        return $this::where('id', $id)->update(['email_verify_at'=> $verify]);
     }
 }

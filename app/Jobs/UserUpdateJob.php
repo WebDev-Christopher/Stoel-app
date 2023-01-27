@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\AddedChair;
+use App\Mail\UserUpdate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
@@ -11,7 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
-class ChairCreateJob implements ShouldQueue
+class UserUpdateJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -19,18 +19,18 @@ class ChairCreateJob implements ShouldQueue
      * The podcast instance.
      *
      */
-    public $allUsers;
-    public $CreateChair;
+    public $email_to;
+    public $email_details;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($allUsers, $CreateChair)
+    public function __construct($email_to, $email_details)
     {
-        $this->allUsers = $allUsers;
-        $this->CreateChair = $CreateChair;
+        $this->email_to = $email_to;
+        $this->email_details = $email_details;
     }
 
     /**
@@ -40,9 +40,6 @@ class ChairCreateJob implements ShouldQueue
      */
     public function handle()
     {
-        foreach ($this->allUsers as $user) {
-            Mail::to($user["email"])->send(new AddedChair($this->CreateChair));
-        }
-        
+        Mail::to($this->email_to)->send(new UserUpdate($this->email_details));
     }
 }

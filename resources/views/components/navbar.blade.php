@@ -3,6 +3,7 @@
     <div>
         @auth
             <a href="/chairs/create"><button type="button" class="btn btn-light me-2">Add Product</button></a>
+            <a href="/user/settings"><button type="button" class="btn btn-secondary me-2">User Settings</button></a>
             <a href="/logout"><button type="button" class="btn btn-danger me-2">Logout</button></a>
         @endauth
     </div>

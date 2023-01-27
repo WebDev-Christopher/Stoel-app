@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('/chair/delete/{slug}', [ChairController::class, 'deleteChair']);
 
-    Route::get('/logout',  [UserController::class, 'logout']);
+    Route::get('/user/settings',  [UserController::class, 'settings']);
 
+    Route::get('/logout',  [UserController::class, 'logout']);
 });

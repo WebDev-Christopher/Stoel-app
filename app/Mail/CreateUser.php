@@ -56,7 +56,7 @@ class CreateUser extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.users.createuser',
+            view: 'emails.users.create',
         );
     }
 

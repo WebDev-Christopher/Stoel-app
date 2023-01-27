@@ -8,11 +8,18 @@ use App\Mail\LoginUser;
 use App\Mail\CreateUser;
 use App\Jobs\UserLoginJob;
 use App\Jobs\UserCreateJob;
+use App\Jobs\UserUpdateJob;
+use App\Jobs\UserVerifyJob;
 use Illuminate\Http\Request;
+use App\Jobs\UserUpdateAdminJob;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\updateUserRequest;
 use App\Http\Requests\UserCreateRequest;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\updateUserAdminRequest;
+use App\Http\Requests\updateUserPasswordRequest;
+use App\Http\Requests\updateUserVerificationRequest;
 
 class UserController extends Controller
 {
@@ -102,6 +109,60 @@ class UserController extends Controller
         else {
             return redirect()->back()->with('message', "User couldn't be created");
         }
+    }
+
+    public function settings() {
+        return view('pages.users.settings', [ 
+            'user' => $this->users->getCurrentUser() 
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\updateUserRequest   $request
+     * @return \Illuminate\Http\Response
+     */    
+    public function updateUser(updateUserRequest $request) {
+        $user_data = $request->validated();
+        UserUpdateJob::dispatch($user_data["email"], $user_data);
+        $this->users->updateUser($user_data["id"], $user_data["username"], $user_data["email"]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\updateUserPasswordRequest   $request
+     * @return \Illuminate\Http\Response
+     */    
+    public function updateUserPassword(updateUserPasswordRequest $request) {
+        $user_data = $request->validated();
+        UserUpdateJob::dispatch($user_data["email"], $user_data);
+        $this->users->updateUserPassword($user_data["id"], password_hash($user_data["password"], PASSWORD_DEFAULT));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\updateUserAdminRequest   $request
+     * @return \Illuminate\Http\Response
+     */    
+    public function updateUserAdmin(updateUserAdminRequest $request) {
+        $user_data = $request->validated();
+        UserUpdateAdminJob::dispatch($user_data["email"], $user_data);
+        $this->users->updateUserAdmin($user_data["id"], $user_data["admin"]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\updateUserVerificationRequest   $request
+     * @return \Illuminate\Http\Response
+     */    
+    public function updateUserVerification(updateUserVerificationRequest $request) {
+        $user_data = $request->validated();
+        UserVerifyJob::dispatch($user_data["email"], $user_data);
+        $this->users->updateUserVerification($user_data["id"], $user_data["verify"]);
     }
 
     public function logout(Request $request) {
