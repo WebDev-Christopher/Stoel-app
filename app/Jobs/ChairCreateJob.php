@@ -19,16 +19,18 @@ class ChairCreateJob implements ShouldQueue
      * The podcast instance.
      *
      */
-    public $details;
+    public $allUsers;
+    public $CreateChair;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($details)
+    public function __construct($allUsers, $CreateChair)
     {
-        $this->details = $details;
+        $this->allUsers = $allUsers;
+        $this->CreateChair = $CreateChair;
     }
 
     /**
@@ -38,6 +40,6 @@ class ChairCreateJob implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->details['email_to'])->send(new AddedChair($this->details));
+        Mail::to($this->allUsers)->send(new AddedChair($this->CreateChair));
     }
 }

@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Chair;
 use App\Mail\LoginUser;
 use App\Mail\CreateUser;
+use App\Jobs\UserLoginJob;
+use App\Jobs\UserCreateJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\UserLoginRequest;
@@ -47,7 +49,7 @@ class UserController extends Controller
             $user_data["email_to"] = $user->email;
             if(password_verify($user_data["password"], $user->password)) {
                 
-                Mail::to($user["email"])->queue(new LoginUser($user_data));
+                UserLoginJob::dispatch($user["email"], $user_data);
                 
                 if(auth()->login($user)) {
                     $request->session()->regenerate();
@@ -87,7 +89,7 @@ class UserController extends Controller
         $user_data["password"] = password_hash($user_data["password"], PASSWORD_DEFAULT);
 
         if($user_data){
-            Mail::to($user_data["email"])->queue(new CreateUser($user_data));
+            UserCreateJob::dispatch($user_data["email"], $user_data);
 
             if(auth()->login(User::create($user_data))) {
                 $request->session()->regenerate();

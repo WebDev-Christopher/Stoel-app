@@ -19,16 +19,18 @@ class UserCreateJob implements ShouldQueue
      * The podcast instance.
      *
      */
-    public $details;
+    public $email_to;
+    public $email_details;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($details)
+    public function __construct($email_to, $email_details)
     {
-        $this->details = $details;
+        $this->email_to = $email_to;
+        $this->email_details = $email_details;
     }
 
     /**
@@ -38,6 +40,6 @@ class UserCreateJob implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->details['email'])->send(new CreateUser($this->details));
+        Mail::to($this->email_to)->send(new CreateUser($this->email_details));
     }
 }

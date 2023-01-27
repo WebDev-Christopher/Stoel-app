@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Chair;
-use App\Mail\LoginUser;
-use App\Mail\AddedChair;
-use App\Mail\CreateUser;
+use App\Jobs\ChairCreateJob;
+use App\Jobs\ChairDeleteJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\UserLoginRequest;
@@ -74,7 +73,7 @@ class ChairController extends Controller
         $CreateChair["email_to"] = $allUsers;
 
         if($allUsers || $CreateChair) {
-            Mail::to($allUsers)->queue(new AddedChair($CreateChair));
+            ChairCreateJob::dispatch($allUsers, $CreateChair);
             return redirect('/')->with('message', 'Chair has been created');
         }
         else {
